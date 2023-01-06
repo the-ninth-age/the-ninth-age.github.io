@@ -1,5 +1,10 @@
 $(() => {
-    console.log('start');
+    Logger.useDefaults({
+        formatter: function (messages, context) {
+            messages.unshift(new Date().toUTCString())
+        }
+    });
+    Logger.log('start');
 
     const config = {
         type: Phaser.AUTO,
