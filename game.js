@@ -1,7 +1,12 @@
 $(() => {
     Logger.useDefaults({
         formatter: function (messages, context) {
-            messages.unshift(new Date().toUTCString())
+            messages.unshift('-');
+
+            if (context.name !== undefined) {
+                messages.unshift(context.name);
+            }
+            messages.unshift(new Date().toISOString(), context.level.name);
         }
     });
     Logger.log('start');
