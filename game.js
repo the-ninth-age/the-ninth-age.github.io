@@ -100,24 +100,23 @@ class GameScene extends Phaser.Scene {
         this.base = this.add
             .rectangle(x, offset, width, width)
             .setOrigin(0)
-            .setStrokeStyle(EowStyle.BATTLEFIELD_EDGE_WIDTH, EowStyle.BATTLEFIELD_EDGE_COLOR);
+            .setStrokeStyle(EowStyle.BATTLEFIELD_EDGE_WIDTH, EowStyle.BATTLEFIELD_EDGE_COLOR)
+            .setInteractive();
         this.model = this.add
             .sprite(x - 7, offset + 14, this.t9aTexture, 'cultists/cult-leader/00-cult-leader-0.png')
             .setScale(0.2)
-            .setOrigin(0, 1)
-            .setInteractive();  
+            .setOrigin(0, 1);  
         if (playerPickedLeft) {
             this.model
                 .setX(x - (this.model.displayWidth - 7 - this.base.displayWidth))
                 .setFlipX(true);
         }
-        this.input.setDraggable(this.model);
+        this.input.setDraggable(this.base);
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-
             gameObject.x = dragX;
             gameObject.y = dragY;
-    
-        });
+            this.model.setPosition(dragX - 7, dragY + 14);
+        }, this);
 
         const cursors = this.input.keyboard.createCursorKeys();
 
