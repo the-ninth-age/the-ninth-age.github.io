@@ -119,6 +119,23 @@ class GameScene extends Phaser.Scene {
     
         });
 
+        const cursors = this.input.keyboard.createCursorKeys();
+
+        const controlConfig = {
+            camera: this.cameras.main,
+            left: cursors.left,
+            right: cursors.right,
+            up: cursors.up,
+            down: cursors.down,
+            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+            speed: 0.5,
+            maxZoom: 6,
+            minZoom: 1
+        };
+        
+        this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
+
         $(window).resize(() => this.drawGameAfterResize());
     }
 
@@ -126,18 +143,19 @@ class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (this.game.input.activePointer.isDown) {
-            if (this.game.origDragPoint) {
-                // move the camera by the amount the mouse has moved since last update
-                this.cameras.main.scrollX +=
-                    (this.game.origDragPoint.x - this.game.input.activePointer.position.x) / this.cameras.main.zoom;
-                this.cameras.main.scrollY +=
-                    (this.game.origDragPoint.y - this.game.input.activePointer.position.y) / this.cameras.main.zoom;
-            } // set new drag origin to current position
-            this.game.origDragPoint = this.game.input.activePointer.position.clone();
-        } else {
-            this.game.origDragPoint = null;
-        }
+        this.controls.update(delta);
+        // if (this.game.input.activePointer.isDown) {
+        //     if (this.game.origDragPoint) {
+        //         // move the camera by the amount the mouse has moved since last update
+        //         this.cameras.main.scrollX +=
+        //             (this.game.origDragPoint.x - this.game.input.activePointer.position.x) / this.cameras.main.zoom;
+        //         this.cameras.main.scrollY +=
+        //             (this.game.origDragPoint.y - this.game.input.activePointer.position.y) / this.cameras.main.zoom;
+        //     } // set new drag origin to current position
+        //     this.game.origDragPoint = this.game.input.activePointer.position.clone();
+        // } else {
+        //     this.game.origDragPoint = null;
+        // }
     }
 
     captureWindowSize() {
