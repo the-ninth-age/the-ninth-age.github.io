@@ -22,11 +22,13 @@ $(() => {
         parent: 'canvas-container',
         scale: {
             mode: Phaser.Scale.RESIZE
-        },
-        scene: [GameScene]
+        }/* ,
+        scene: [GameScene] */
     };
 
-    new Phaser.Game(config);
+    const game = new Phaser.Game(config);
+    game.scene.add(GameScene.name, GameScene);
+    game.scene.start(GameScene.name, Logger.get(GameScene.name));
 });
 
 class GameScene extends Phaser.Scene {
@@ -41,7 +43,8 @@ class GameScene extends Phaser.Scene {
         this.load.atlas(this.t9aTexture);
     }
 
-    create() {
+    create(logger) {
+        logger.info('Logger passed successfully');
         this.battlefield = this.add
             .rectangle(0, 0, EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
             .setOrigin(0)
