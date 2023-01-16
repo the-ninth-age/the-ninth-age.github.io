@@ -31,11 +31,14 @@ $(() => {
 
 class GameScene extends Phaser.Scene {
 
+    t9aTexture = 'images/the-ninth-age-sprites'
+
     constructor() {
         super(GameScene.name);
     }
 
     preload() {
+        this.load.atlas(this.t9aTexture);
     }
 
     create() {
@@ -73,10 +76,68 @@ class GameScene extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor('#8ce8a3');
 
+        this.cameras.main
+            .setBounds(-400, -200, 400*2 + EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
+            .setScroll(-150, -100);
+        
+        this.input.on('wheel', /** @param {Phaser.Input.Pointer} pointer */ (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
+            Logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
+            if (deltaY < 0) {
+                if (this.cameras.main.zoom < 6) {
+                    this.cameras.main.zoom += 0.05;
+                }
+            } else {
+                if (1 < this.cameras.main.zoom) {
+                    this.cameras.main.zoom -= 0.05;
+                }
+            }
+        });
+        const playerPickedLeft = false;
+        const offset = 50;
+        const width = 20 * DisplaySize.MM;
+        const x = playerPickedLeft ? -offset - width : EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH + offset;
+
+        this.base = this.add
+            .rectangle(x, offset, width, width)
+            .setOrigin(0)
+            .setStrokeStyle(EowStyle.BATTLEFIELD_EDGE_WIDTH, EowStyle.BATTLEFIELD_EDGE_COLOR);
+        this.model = this.add
+            .sprite(x - 7, offset + 14, this.t9aTexture, 'cultists/cult-leader/00-cult-leader-0.png')
+            .setScale(0.2)
+            .setOrigin(0, 1)
+            .setInteractive();  
+        if (playerPickedLeft) {
+            this.model
+                .setX(x - (this.model.displayWidth - 7 - this.base.displayWidth))
+                .setFlipX(true);
+        }
+        this.input.setDraggable(this.model);
+        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+    
+        });
+
         $(window).resize(() => this.drawGameAfterResize());
     }
 
     drawGameAfterResize() {
+    }
+
+    update(time, delta) {
+        if (this.game.input.activePointer.isDown) {
+            if (this.game.origDragPoint) {
+                // move the camera by the amount the mouse has moved since last update
+                this.cameras.main.scrollX +=
+                    (this.game.origDragPoint.x - this.game.input.activePointer.position.x) / this.cameras.main.zoom;
+                this.cameras.main.scrollY +=
+                    (this.game.origDragPoint.y - this.game.input.activePointer.position.y) / this.cameras.main.zoom;
+            } // set new drag origin to current position
+            this.game.origDragPoint = this.game.input.activePointer.position.clone();
+        } else {
+            this.game.origDragPoint = null;
+        }
     }
 
     captureWindowSize() {

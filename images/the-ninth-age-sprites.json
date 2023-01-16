@@ -1,0 +1,40 @@
+{
+	"textures": [
+		{
+			"image": "the-ninth-age-sprites.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 150,
+				"h": 239
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cultists/cult-leader/00-cult-leader-0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 150,
+						"h": 239
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 150,
+						"h": 239
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 150,
+						"h": 239
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.5"
+	}
+}
