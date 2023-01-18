@@ -1,0 +1,26 @@
+{
+    "main-menu": "Main menu",
+    "new-game": "New Game",
+    "join-game": "Join Game",
+    "leave-game": "Leave Game",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "waiting-for-second-player": "Waiting for the second player...",
+
+    "essence-of-war": "Essence of War",
+    "ESSENCE_OF_WAR": "Essence of War",
+    "the-ninth-age": "The Ninth Age",
+    "THE_NINTH_AGE": "The Ninth Age",
+
+    "army-points": "Army Points: ",
+    "vs": " vs ",
+
+    "pick": "Pick",
+
+    "roll-for-being-first": "The roll for being first",
+    "roll-for-being-first-you": "You: ",
+    "roll-for-being-first-enemy": "Enemy: ",
+    "pick-side-of-table": "Pick a side of the table",
+    "show-battlefield": "Show battlefield",
+    "reroll": "Reroll"
+}

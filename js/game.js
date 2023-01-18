@@ -1,37 +1,6 @@
-$(() => {
-    Logger.useDefaults({
-        formatter: function (messages, context) {
-            messages.unshift('-');
-
-            if (context.name !== undefined) {
-                messages.unshift(context.name);
-            }
-            messages.unshift(new Date().toISOString(), context.level.name);
-        }
-    });
-    Logger.info('start');
-
-    $.i18n = (text) => {
-        return text;
-    };
-
-    const config = {
-        type: Phaser.AUTO,
-        width: '100%',
-        height: '100%',
-        parent: 'canvas-container',
-        scale: {
-            mode: Phaser.Scale.RESIZE
-        }/* ,
-        scene: [GameScene] */
-    };
-
-    const game = new Phaser.Game(config);
-    game.scene.add(GameScene.name, GameScene);
-    game.scene.start(GameScene.name, Logger.get(GameScene.name));
-});
-
 class GameScene extends Phaser.Scene {
+
+    logger = Logger.get(GameScene.name);
 
     t9aTexture = 'images/the-ninth-age-sprites'
 
@@ -43,8 +12,7 @@ class GameScene extends Phaser.Scene {
         this.load.atlas(this.t9aTexture);
     }
 
-    create(logger) {
-        logger.info('Logger passed successfully');
+    create(/** @type {InitializationModule} */initializationModule) {
         this.battlefield = this.add
             .rectangle(0, 0, EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
             .setOrigin(0)
@@ -84,7 +52,7 @@ class GameScene extends Phaser.Scene {
             .setScroll(-150, -100);
         
         this.input.on('wheel', /** @param {Phaser.Input.Pointer} pointer */ (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-            Logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
+            logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
             if (deltaY < 0) {
                 if (this.cameras.main.zoom < 6) {
                     this.cameras.main.zoom += 0.05;
@@ -139,6 +107,8 @@ class GameScene extends Phaser.Scene {
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
 
         $(window).resize(() => this.drawGameAfterResize());
+
+        initializationModule.proceedInitialization();
     }
 
     drawGameAfterResize() {

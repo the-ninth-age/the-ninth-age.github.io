@@ -1,0 +1,7 @@
+jquery.i18n.js
+jquery.i18n.messagestore.js
+jquery.i18n.fallbacks.js
+jquery.i18n.language.js
+jquery.i18n.parser.js
+jquery.i18n.emitter.js
+jquery.i18n.emitter.bidi.js
