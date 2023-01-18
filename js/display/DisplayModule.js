@@ -15,8 +15,8 @@ class DisplayModule extends Initialization {
             };
         
             const game = new Phaser.Game(config);
-            game.scene.add(GameScene.name, GameScene);
-            game.scene.start(GameScene.name, initializationModule);
+            game.scene.add(BattlefieldScene.name, BattlefieldScene);
+            game.scene.start(BattlefieldScene.name, initializationModule);
         });
     }
 }

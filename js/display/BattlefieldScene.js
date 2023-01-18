@@ -1,11 +1,11 @@
-class GameScene extends Phaser.Scene {
+class BattlefieldScene extends Phaser.Scene {
 
-    logger = Logger.get(GameScene.name);
+    logger = Logger.get(BattlefieldScene.name);
 
     t9aTexture = 'images/the-ninth-age-sprites'
 
     constructor() {
-        super(GameScene.name);
+        super(BattlefieldScene.name);
     }
 
     preload() {
@@ -51,8 +51,8 @@ class GameScene extends Phaser.Scene {
             .setBounds(-400, -200, 400*2 + EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
             .setScroll(-150, -100);
         
-        this.input.on('wheel', /** @param {Phaser.Input.Pointer} pointer */ (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-            logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
+        this.input.on('wheel', (/** @type {Phaser.Input.Pointer} */pointer, gameObjects, deltaX, /** @type {Number} */deltaY, deltaZ) => {
+            this.logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
             if (deltaY < 0) {
                 if (this.cameras.main.zoom < 6) {
                     this.cameras.main.zoom += 0.05;
