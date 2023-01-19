@@ -87,12 +87,12 @@ class BattlefieldScene extends Phaser.Scene {
                 .setX(x - (this.model.displayWidth - 7 - this.base.displayWidth))
                 .setFlipX(true);
         }
-        this.input.setDraggable(this.base); 
-        this.input.on('drag', function (pointer, gameObject, /** @type {Number} */dragX, /** @type {Number} */dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+        this.input.setDraggable(this.base);
+        this.base.on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
+            this.base.x = dragX;
+            this.base.y = dragY;
             this.model.setPosition(dragX - 7, dragY + 14);
-        }, this);
+        });
 
         const displayFactory = new PhaserDisplayFactory(this);
         data.eowModule.initialize(displayFactory);
