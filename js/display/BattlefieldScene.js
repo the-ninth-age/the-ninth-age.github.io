@@ -12,7 +12,12 @@ class BattlefieldScene extends Phaser.Scene {
         this.load.atlas(this.t9aTexture);
     }
 
-    create(/** @type {InitializationModule} */initializationModule) {
+    /**
+     * @param {Object} data 
+     * @param {EowModule} data.eowModule
+     * @param {InitializationModule} data.initializationModule
+     */
+    create(data) {
         this.battlefield = this.add
             .rectangle(0, 0, EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
             .setOrigin(0)
@@ -82,12 +87,15 @@ class BattlefieldScene extends Phaser.Scene {
                 .setX(x - (this.model.displayWidth - 7 - this.base.displayWidth))
                 .setFlipX(true);
         }
-        this.input.setDraggable(this.base);
-        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+        this.input.setDraggable(this.base); 
+        this.input.on('drag', function (pointer, gameObject, /** @type {Number} */dragX, /** @type {Number} */dragY) {
             gameObject.x = dragX;
             gameObject.y = dragY;
             this.model.setPosition(dragX - 7, dragY + 14);
         }, this);
+
+        const displayFactory = new PhaserDisplayFactory(this);
+        data.eowModule.initialize(displayFactory);
 
         const cursors = this.input.keyboard.createCursorKeys();
 
@@ -108,7 +116,7 @@ class BattlefieldScene extends Phaser.Scene {
 
         $(window).resize(() => this.drawGameAfterResize());
 
-        initializationModule.proceedInitialization();
+        data.initializationModule.proceedInitialization();
     }
 
     drawGameAfterResize() {

@@ -4,7 +4,7 @@ class App {
         const initializationModule = new InitializationModule([
             new LoggerModule(),
             new I18nLoader(),
-            new DisplayModule(),
+            new PhaserDisplayModule(new EowModule()),
             new I18nModule()
         ]);
         initializationModule.startInitialization();

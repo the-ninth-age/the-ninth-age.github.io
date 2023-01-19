@@ -1,8 +1,16 @@
-class DisplayModule extends Initialization {
+class PhaserDisplayModule extends Initialization {
+
+    /** @type {EowModule} */
+    eowModule = null;
+
+    constructor(/** @type {EowModule} */eowModule) {
+        super();
+        this.eowModule = eowModule;
+    }
 
     startInitialization(/** @type {InitializationModule} */initializationModule) {
         $(() => {
-            Logger.get(DisplayModule.name).info('Display module initialize');
+            Logger.get(PhaserDisplayModule.name).info('Display module initialize');
 
             const config = {
                 type: Phaser.AUTO,
@@ -16,7 +24,10 @@ class DisplayModule extends Initialization {
         
             const game = new Phaser.Game(config);
             game.scene.add(BattlefieldScene.name, BattlefieldScene);
-            game.scene.start(BattlefieldScene.name, initializationModule);
+            game.scene.start(BattlefieldScene.name, {
+                eowModule: this.eowModule,
+                initializationModule: initializationModule
+            });
         });
     }
 }
