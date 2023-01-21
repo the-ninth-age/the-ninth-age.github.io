@@ -1,9 +1,11 @@
 class EowModule {
 
     initialize(/** @type {EowDisplayFactory} */displayFactory) {
-        const offset = 50;
+        const table = new EowTable();
+        displayFactory.createTable(table);
+
         const width = 20;
-        const base = new EowBase(offset, offset, width, width);
+        const base = new EowBase(50, 50, width, width);
         displayFactory.createBase(base);
 
         const cultLeaderImageId = new ImageId('cultists/cult-leader/00-cult-leader-0.png');

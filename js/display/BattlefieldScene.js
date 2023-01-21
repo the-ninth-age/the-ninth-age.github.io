@@ -18,84 +18,21 @@ class BattlefieldScene extends Phaser.Scene {
      * @param {InitializationModule} data.initializationModule
      */
     create(data) {
-        this.battlefield = this.add
-            .rectangle(0, 0, EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
-            .setOrigin(0)
-            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
-            .setVisible(false);
-        this.leftDeploymentZone = this.add
-            .rectangle(0, 0, EowSize.DEPLOYMENT_ZONE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
-            .setOrigin(0)
-            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
-            .setVisible(false);
-        this.leftDeploymentZone.setInteractive(this.leftDeploymentZone.getBounds(), Phaser.Geom.Rectangle.Contains)
-            .disableInteractive();
-        this.rightDeploymentZone = this.add
-            .rectangle(0 + 3 * EowSize.DEPLOYMENT_ZONE * DisplaySize.INCH, 0, EowSize.DEPLOYMENT_ZONE * DisplaySize.INCH, EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
-            .setOrigin(0)
-            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
-            .setVisible(false);
-        this.rightDeploymentZone.setInteractive(this.leftDeploymentZone.getBounds(), Phaser.Geom.Rectangle.Contains)
-            .disableInteractive();
-        this.pickLeftDeploymentZoneText = this.add
-            .text(0, 0, $.i18n('pick-side-of-table'), { color: '#000', fontSize: 75, wordWrap: { width: EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH } })
-            .setAngle(90)
-            .setOrigin(0, 1)
-            .setVisible(false);
-        this.pickLeftDeploymentZoneText.setPosition(EowSize.DEPLOYMENT_ZONE / 2 * DisplaySize.INCH - this.pickLeftDeploymentZoneText.height / 2, 20);
-        this.pickRightDeploymentZoneText = this.add
-            .text(0, 0, $.i18n('pick-side-of-table'), { color: '#000', fontSize: 75, wordWrap: { width: EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH } })
-            .setAngle(90)
-            .setOrigin(0, 1)
-            .setVisible(false);
-        this.pickRightDeploymentZoneText.setPosition(3 * EowSize.DEPLOYMENT_ZONE * DisplaySize.INCH + EowSize.DEPLOYMENT_ZONE / 2 * DisplaySize.INCH - this.pickRightDeploymentZoneText.height / 2, 20);
-
-        this.cameras.main.setBackgroundColor('#8ce8a3');
-
-        this.cameras.main
-            .setBounds(-400, -200, 400*2 + EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.BATTLEFIELD_SHORT_EDGE * DisplaySize.INCH)
-            .setScroll(-150, -100);
-        
-        this.input.on('wheel', (/** @type {Phaser.Input.Pointer} */pointer, gameObjects, deltaX, /** @type {Number} */deltaY, deltaZ) => {
-            this.logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
-            if (deltaY < 0) {
-                if (this.cameras.main.zoom < 6) {
-                    this.cameras.main.zoom += 0.05;
-                }
-            } else {
-                if (1 < this.cameras.main.zoom) {
-                    this.cameras.main.zoom -= 0.05;
-                }
-            }
-        });
-        const playerPickedLeft = false;
-        const offset = 50;
-        const width = 20 * DisplaySize.MM;
-        const x = playerPickedLeft ? -offset - width : EowSize.BATTLEFIELD_LONG_EDGE * DisplaySize.INCH + offset;
-
-        this.base = this.add
-            .rectangle(x, offset, width, width)
-            .setOrigin(0)
-            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
-            .setInteractive();
-        this.model = this.add
-            .sprite(x - 7, offset + 14, this.t9aTexture, 'cultists/cult-leader/00-cult-leader-0.png')
-            .setScale(0.2)
-            .setOrigin(0, 1);  
-        if (playerPickedLeft) {
-            this.model
-                .setX(x - (this.model.displayWidth - 7 - this.base.displayWidth))
-                .setFlipX(true);
-        }
-        this.input.setDraggable(this.base);
-        this.base.on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
-            this.base.x = dragX;
-            this.base.y = dragY;
-            this.model.setPosition(dragX - 7, dragY + 14);
-        });
-
         const displayFactory = new PhaserDisplayFactory(this);
         data.eowModule.initialize(displayFactory);
+
+        this.configureCamera();
+
+        $(window).resize(() => this.drawGameAfterResize());
+
+        data.initializationModule.proceedInitialization();
+    }
+
+    configureCamera() {
+        this.cameras.main
+            .setBounds(-400, -200, 400*2 + EowSize.TABLE_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.TABLE_SHORT_EDGE * DisplaySize.INCH)
+            .setScroll(-150, -100)
+            .setBackgroundColor('#8ce8a3');
 
         const cursors = this.input.keyboard.createCursorKeys();
 
@@ -111,12 +48,20 @@ class BattlefieldScene extends Phaser.Scene {
             maxZoom: 6,
             minZoom: 1
         };
-        
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
-
-        $(window).resize(() => this.drawGameAfterResize());
-
-        data.initializationModule.proceedInitialization();
+        
+        this.input.on('wheel', (/** @type {Phaser.Input.Pointer} */pointer, gameObjects, deltaX, /** @type {Number} */deltaY, deltaZ) => {
+            this.logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
+            if (deltaY < 0) {
+                if (this.cameras.main.zoom < controlConfig.maxZoom) {
+                    this.cameras.main.zoom += 0.05;
+                }
+            } else {
+                if (controlConfig.minZoom < this.cameras.main.zoom) {
+                    this.cameras.main.zoom -= 0.05;
+                }
+            }
+        });
     }
 
     drawGameAfterResize() {

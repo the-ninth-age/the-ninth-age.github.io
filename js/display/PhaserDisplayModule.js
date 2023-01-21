@@ -1,7 +1,6 @@
 class PhaserDisplayModule extends Initialization {
 
-    /** @type {EowModule} */
-    eowModule = null;
+    /** @type {EowModule} */eowModule = null;
 
     constructor(/** @type {EowModule} */eowModule) {
         super();

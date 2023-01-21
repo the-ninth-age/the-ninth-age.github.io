@@ -1,4 +1,4 @@
-class PhaserDisplayBase {
+class PhaserDisplayBase extends EowDisplayBase {
 
     /** @type {BattlefieldScene} */battlefieldScene = null
 

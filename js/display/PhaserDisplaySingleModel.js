@@ -1,4 +1,4 @@
-class PhaserDisplaySingleModel {
+class PhaserDisplaySingleModel extends EowDisplaySingleModel {
 
     /** @type {BattlefieldScene} */battlefieldScene = null;
 

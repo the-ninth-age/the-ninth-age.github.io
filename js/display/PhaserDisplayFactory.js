@@ -7,6 +7,12 @@ class PhaserDisplayFactory extends EowDisplayFactory {
         this.battlefieldScene = battlefieldScene;
     }
 
+    createTable(/** @type {EowTable} */table) {
+        const displayTable = new PhaserDisplayTable(this.battlefieldScene, table);
+        table.displayTable = displayTable;
+        displayTable.create();
+    }
+
     createBase(/** @type {EowBase} */base) {
         const displayBase = new PhaserDisplayBase(this.battlefieldScene, base);
         base.displayBase = displayBase;
