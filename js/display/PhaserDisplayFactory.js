@@ -12,4 +12,12 @@ class PhaserDisplayFactory extends EowDisplayFactory {
         base.displayBase = displayBase;
         displayBase.create();
     }
+
+    createSingleModel(/** @type {EowSingleModel} */singleModel) {
+        this.createBase(singleModel.base);
+        
+        const displaySingleModel = new PhaserDisplaySingleModel(this.battlefieldScene, singleModel);
+        singleModel.displaySingleModel = displaySingleModel;
+        displaySingleModel.create();
+    }
 }

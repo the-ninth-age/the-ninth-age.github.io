@@ -15,12 +15,20 @@ class PhaserDisplayBase {
         this.rectangle = this.battlefieldScene.add
             .rectangle(this.base.x, this.base.y, this.base.sideSize * DisplaySize.MM, this.base.frontSize * DisplaySize.MM)
             .setOrigin(0)
-            .setStrokeStyle(EowStyle.BATTLEFIELD_EDGE_WIDTH, EowStyle.BATTLEFIELD_EDGE_COLOR)
+            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
             .setInteractive();
         this.battlefieldScene.input.setDraggable(this.rectangle);
         this.rectangle.on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
-            this.rectangle.x = dragX;
-            this.rectangle.y = dragY;
+            this.rectangle.setPosition(dragX, dragY);
         });
+    }
+
+    attachImage(/** @type {PhaserDisplaySingleModel} */displaySingleModel) {
+        this.rectangle
+            .off('drag')
+            .on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
+                this.rectangle.setPosition(dragX, dragY);
+                displaySingleModel.setPosition(dragX, dragY);
+            });
     }
 }
