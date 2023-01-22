@@ -4,11 +4,53 @@
 			"image": "the-ninth-age-sprites.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 150,
+				"w": 427,
 				"h": 239
 			},
 			"scale": 1,
 			"frames": [
+				{
+					"filename": "cultists/cultist/00-cultist-0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 140,
+						"h": 232
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 140,
+						"h": 232
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 140,
+						"h": 232
+					}
+				},
+				{
+					"filename": "cultists/cultist/00-cultist-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 137,
+						"h": 235
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 137,
+						"h": 235
+					},
+					"frame": {
+						"x": 140,
+						"y": 0,
+						"w": 137,
+						"h": 235
+					}
+				},
 				{
 					"filename": "cultists/cult-leader/00-cult-leader-0.png",
 					"rotated": false,
@@ -24,7 +66,7 @@
 						"h": 239
 					},
 					"frame": {
-						"x": 0,
+						"x": 277,
 						"y": 0,
 						"w": 150,
 						"h": 239
