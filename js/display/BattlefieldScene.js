@@ -18,7 +18,8 @@ class BattlefieldScene extends Phaser.Scene {
      * @param {InitializationModule} data.initializationModule
      */
     create(data) {
-        const displayFactory = new PhaserDisplayFactory(this);
+        const imageRegistry = new PhaserImageRegistry();
+        const displayFactory = new PhaserDisplayFactory(this, imageRegistry);
         data.eowModule.initialize(displayFactory);
 
         this.configureCamera();
@@ -31,7 +32,8 @@ class BattlefieldScene extends Phaser.Scene {
     configureCamera() {
         this.cameras.main
             .setBounds(-400, -200, 400*2 + EowSize.TABLE_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.TABLE_SHORT_EDGE * DisplaySize.INCH)
-            .setScroll(-150, -100)
+            .setScroll(-700, -300)
+            .setZoom(3)
             .setBackgroundColor('#8ce8a3');
 
         const cursors = this.input.keyboard.createCursorKeys();

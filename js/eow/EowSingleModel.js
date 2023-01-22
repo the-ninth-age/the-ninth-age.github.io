@@ -10,4 +10,8 @@ class EowSingleModel {
         this.base = base;
         this.imageId = imageId;
     }
+
+    clone() {
+        return new EowSingleModel(this.base.clone(), this.imageId);
+    }
 }

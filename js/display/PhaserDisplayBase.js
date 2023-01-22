@@ -7,6 +7,7 @@ class PhaserDisplayBase extends EowDisplayBase {
     /** @type {Phaser.GameObjects.Rectangle} */rectangle = null;
 
     constructor(/** @type {BattlefieldScene} */battlefieldScene, /** @type {EowBase} */base) {
+        super();
         this.battlefieldScene = battlefieldScene;
         this.base = base;
     }

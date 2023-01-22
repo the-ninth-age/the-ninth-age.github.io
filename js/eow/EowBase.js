@@ -21,4 +21,8 @@ class EowBase {
         this.frontSize = frontSize;
         this.sideSize = sideSize;
     }
+
+    clone() {
+        return new EowBase(this.x, this.y, this.frontSize, this.sideSize);
+    }
 }

@@ -1,10 +1,12 @@
 class App {
 
+    /** @type {EowModule} */eowModule = new EowModule();
+
     start() {
         const initializationModule = new InitializationModule([
             new LoggerModule(),
             new I18nLoader(),
-            new PhaserDisplayModule(new EowModule()),
+            new PhaserDisplayModule(this.eowModule),
             new I18nModule()
         ]);
         initializationModule.startInitialization();
