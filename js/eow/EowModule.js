@@ -11,7 +11,7 @@ class EowModule {
         displayFactory.createBase(base);
 
         const cultLeaderImageId = new ImageId('cultists/cult-leader/00-cult-leader-0.png');
-        const singleModelBase = new EowBase(150, 150, width, width);
+        const singleModelBase = new EowBase(200, 150, width, width);
         const singleModel = new EowSingleModel(singleModelBase, cultLeaderImageId);
         displayFactory.createSingleModel(singleModel);
 

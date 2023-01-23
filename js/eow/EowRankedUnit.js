@@ -28,4 +28,16 @@ class EowRankedUnit {
             }
         }
     }
+
+    getSingleBase() {
+        return this.models[0][0].base;
+    }
+
+    get files() {
+        return this.models[0].length;
+    }
+
+    get ranks() {
+        return this.models.length;
+    }
 }

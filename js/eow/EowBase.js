@@ -25,4 +25,12 @@ class EowBase {
     clone() {
         return new EowBase(this.x, this.y, this.frontSize, this.sideSize);
     }
+
+    disableFreePlacement() {
+        this.displayBase.disableFreePlacement();
+    }
+
+    changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
+        this.displayBase.changePositionBy(xOffset, yOffset);
+    }
 }

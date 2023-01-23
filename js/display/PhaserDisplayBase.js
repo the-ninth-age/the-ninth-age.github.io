@@ -32,4 +32,15 @@ class PhaserDisplayBase extends EowDisplayBase {
                 displaySingleModel.setPosition(dragX, dragY);
             });
     }
+
+    disableFreePlacement() {
+        this.rectangle
+            .disableInteractive()
+            .off('drag')
+    }
+
+    changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
+        this.rectangle.x += xOffset;
+        this.rectangle.y += yOffset;
+    }
 }

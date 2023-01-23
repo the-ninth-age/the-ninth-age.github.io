@@ -32,4 +32,9 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
     setPosition(/** @type {Number} */x, /** @type {Number} */y) {
         this.sprite.setPosition(x + this.imageOffset.xOffset, y + this.imageOffset.yOffset);
     }
+
+    changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
+        this.sprite.x += xOffset;
+        this.sprite.y += yOffset;
+    }
 }

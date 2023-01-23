@@ -14,4 +14,13 @@ class EowSingleModel {
     clone() {
         return new EowSingleModel(this.base.clone(), this.imageId);
     }
+
+    disableFreePlacement() {
+        this.base.disableFreePlacement();
+    }
+
+    changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
+        this.base.changePositionBy(xOffset, yOffset);
+        this.displaySingleModel.changePositionBy(xOffset, yOffset);
+    }
 }

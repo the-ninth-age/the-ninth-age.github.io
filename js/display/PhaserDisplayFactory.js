@@ -39,5 +39,6 @@ class PhaserDisplayFactory extends EowDisplayFactory {
         });
         const displayRankedUnit = new PhaserDisplayRankedUnit(this.battlefieldScene, rankedUnit);
         rankedUnit.displayRankedUnit = displayRankedUnit;
+        displayRankedUnit.create();
     }
 }
