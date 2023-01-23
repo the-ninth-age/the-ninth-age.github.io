@@ -2,6 +2,10 @@ class EowModule {
 
     /** @type {EowRankedUnit} */cultistsUnit = null;
 
+    /** @type {EowRankedUnit} */succubiUnit = null;
+
+    /** @type {EowRankedUnit} */clawedFiendUnit = null;
+
     initialize(/** @type {EowDisplayFactory} */displayFactory) {
         const table = new EowTable();
         displayFactory.createTable(table);
@@ -22,5 +26,19 @@ class EowModule {
         const cultist1 = new EowSingleModel(cultistModelBase, cultist1ImageId);
         this.cultistsUnit = new EowRankedUnit([cultist0, cultist1], 5, 3);
         displayFactory.createRankedUnit(this.cultistsUnit);
+
+        const succubi0ImageId = new ImageId('cultists/succubi/00-succubi-0.png');
+        const succubi1ImageId = new ImageId('cultists/succubi/00-succubi-1.png');
+        const succubiModelBase = new EowBase(200, 270, 25, 25);
+        const succubi0 = new EowSingleModel(succubiModelBase, succubi0ImageId);
+        const succubi1 = new EowSingleModel(succubiModelBase, succubi1ImageId);
+        this.succubiUnit = new EowRankedUnit([succubi0, succubi1], 5, 3);
+        displayFactory.createRankedUnit(this.succubiUnit);
+
+        const clawedFiendImageId = new ImageId('cultists/clawed-fiend/00-clawed-fiend-0.png');
+        const clawedFiendModelBase = new EowBase(150, 150, 40, 40);
+        const clawedFiend = new EowSingleModel(clawedFiendModelBase, clawedFiendImageId);
+        this.clawedFiendUnit = new EowRankedUnit([clawedFiend], 2, 1)
+        displayFactory.createRankedUnit(this.clawedFiendUnit);
     }
 }

@@ -34,7 +34,7 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
             this.rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM,
             this.rankedUnit.files * modelBase.frontSize * DisplaySize.MM
         )
-            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, 0x44ff44);
+            .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR);
 
         this.container = this.battlefieldScene.add.container(x, y, flattenedModels)
             .setSize(
