@@ -35,11 +35,15 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
                 this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM,
                 this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM
             )
+            .setDepth(y + (this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM) / 2)
             .setInteractive();
         this.#battlefieldScene.input.setDraggable(this.#container);
-        this.#container.on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
-            this.#container.setPosition(dragX, dragY);
-        });
+        this.#container
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_START, () => this.#container.setDepth(Number.MAX_VALUE))
+            .on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
+                this.#container.setPosition(dragX, dragY);
+            })
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_END, () => this.#container.setDepth(this.#container.y + (this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM) / 2));
 
         this.#container.on('pointerover', () => {
             this.#rankedUnit.models.forEach(rank =>

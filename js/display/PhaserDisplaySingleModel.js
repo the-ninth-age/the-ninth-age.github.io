@@ -23,7 +23,8 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
         this.sprite = this.battlefieldScene.add
             .sprite(this.singleModel.base.x + this.imageOffset.xOffset, this.singleModel.base.y + this.imageOffset.yOffset, this.battlefieldScene.t9aTexture, this.singleModel.imageId.value)
             .setScale(0.2)
-            .setOrigin(0, 1);
+            .setOrigin(0, 1)
+            .setDepth(this.singleModel.base.y + this.singleModel.base.frontSize * DisplaySize.MM);
 
         const /** @type {PhaserDisplayBase} */displayBase = this.singleModel.base.displayBase;
         displayBase.attachImage(this);
