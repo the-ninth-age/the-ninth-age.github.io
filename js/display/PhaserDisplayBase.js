@@ -1,6 +1,6 @@
 class PhaserDisplayBase extends EowDisplayBase {
 
-    /** @type {BattlefieldScene} */battlefieldScene = null
+    /** @type {BattlefieldScene} */#battlefieldScene = null
 
     /** @type {EowBase} */base = null;
 
@@ -8,17 +8,17 @@ class PhaserDisplayBase extends EowDisplayBase {
 
     constructor(/** @type {BattlefieldScene} */battlefieldScene, /** @type {EowBase} */base) {
         super();
-        this.battlefieldScene = battlefieldScene;
+        this.#battlefieldScene = battlefieldScene;
         this.base = base;
     }
 
     create() {
-        this.rectangle = this.battlefieldScene.add
+        this.rectangle = this.#battlefieldScene.add
             .rectangle(this.base.x, this.base.y, this.base.sideSize * DisplaySize.MM, this.base.frontSize * DisplaySize.MM)
             .setOrigin(0)
             .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
             .setInteractive();
-        this.battlefieldScene.input.setDraggable(this.rectangle);
+        this.#battlefieldScene.input.setDraggable(this.rectangle);
         this.rectangle.on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
             this.rectangle.setPosition(dragX, dragY);
         });
@@ -31,12 +31,12 @@ class PhaserDisplayBase extends EowDisplayBase {
                 this.rectangle.setPosition(dragX, dragY);
                 displaySingleModel.setPosition(dragX, dragY);
             });
+        this.rectangle.on('pointerover', () => displaySingleModel.sprite.setTint(0x44ff44));
+        this.rectangle.on('pointerout', () => displaySingleModel.sprite.clearTint());
     }
 
     disableFreePlacement() {
-        this.rectangle
-            .disableInteractive()
-            .off('drag')
+        this.rectangle.disableInteractive();
     }
 
     changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
