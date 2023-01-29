@@ -22,8 +22,8 @@ class PhaserDisplayModule extends Initialization {
             };
         
             const game = new Phaser.Game(config);
-            game.scene.add(BattlefieldScene.name, BattlefieldScene);
-            game.scene.start(BattlefieldScene.name, {
+            game.scene.add(EowScene.name, EowScene);
+            game.scene.start(EowScene.name, {
                 eowModule: this.eowModule,
                 initializationModule: initializationModule
             });

@@ -1,11 +1,11 @@
-class BattlefieldScene extends Phaser.Scene {
+class EowScene extends Phaser.Scene {
 
-    logger = Logger.get(BattlefieldScene.name);
+    logger = Logger.get(EowScene.name);
 
     t9aTexture = 'images/the-ninth-age-sprites'
 
     constructor() {
-        super(BattlefieldScene.name);
+        super(EowScene.name);
     }
 
     preload() {
@@ -30,12 +30,6 @@ class BattlefieldScene extends Phaser.Scene {
     }
 
     configureCamera() {
-        this.cameras.main
-            .setBounds(-400, -200, 400*2 + EowSize.TABLE_LONG_EDGE * DisplaySize.INCH, 200*2 + EowSize.TABLE_SHORT_EDGE * DisplaySize.INCH)
-            .setScroll(-700, -300)
-            .setZoom(3)
-            .setBackgroundColor('#8ce8a3');
-
         const cursors = this.input.keyboard.createCursorKeys();
 
         const controlConfig = {
@@ -52,7 +46,7 @@ class BattlefieldScene extends Phaser.Scene {
         };
         this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
         
-        this.input.on('wheel', (/** @type {Phaser.Input.Pointer} */pointer, gameObjects, deltaX, /** @type {Number} */deltaY, deltaZ) => {
+        this.input.on(Phaser.Input.Events.POINTER_WHEEL, (/** @type {Phaser.Input.Pointer} */pointer, gameObjects, deltaX, /** @type {Number} */deltaY, deltaZ) => {
             this.logger.info(`this.cameras.main.zoom = ${this.cameras.main.zoom}`);
             if (deltaY < 0) {
                 if (this.cameras.main.zoom < controlConfig.maxZoom) {

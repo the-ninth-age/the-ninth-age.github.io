@@ -1,18 +1,18 @@
 class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
 
-    /** @type {BattlefieldScene} */#battlefieldScene = null;
+    /** @type {EowScene} */#scene = null;
 
     /** @type {EowRankedUnit} */#rankedUnit = null;
 
     /** @type {Phaser.GameObjects.Container} */#container = null;
 
-    constructor(/** @type {BattlefieldScene} */battlefieldScene, /** @type {EowRankedUnit} */rankedUnit) {
+    constructor(/** @type {EowScene} */scene, /** @type {EowRankedUnit} */rankedUnit) {
         super();
-        this.#battlefieldScene = battlefieldScene;
+        this.#scene = scene;
         this.#rankedUnit = rankedUnit;
     }
 
-    create() {
+    create(/** @type {EowBattlefield} */battlefield) {
         const modelBase = this.#rankedUnit.getSingleBase();
         const x = modelBase.x;
         const y = modelBase.y;
@@ -20,7 +20,7 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
         this.#rankedUnit.models.forEach(rank =>
             rank.forEach(rankedModel => {
                 rankedModel.disableFreePlacement();
-                rankedModel.changePositionBy(-x - (this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM) / 2, -y - (this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM) / 2);
+                rankedModel.changePositionBy(-x - this.#getHalfSideSize(), -y - this.#getHalfFrontSize());
             })
         );
         const /** @type {Array<Phaser.GameObjects.Rectangle>} */bases = this.#rankedUnit.models
@@ -30,29 +30,25 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
             .flatMap(rank => rank)
             .flatMap((/** @type {EowSingleModel} */rankedModel) => rankedModel.displaySingleModel.sprite);
 
-        this.#container = this.#battlefieldScene.add.container(x, y, bases.concat(models))
-            .setSize(
-                this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM,
-                this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM
-            )
-            .setDepth(y + (this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM) / 2)
-            .setInteractive();
-        this.#battlefieldScene.input.setDraggable(this.#container);
-        this.#container
+        this.#container = this.#scene.add.container(x, y, bases.concat(models))
+            .setSize(this.#getSideSize(), this.#getFrontSize())
+            .setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_DRAG_START, () => this.#container.setDepth(Number.MAX_VALUE))
-            .on('drag', (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG, (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
                 this.#container.setPosition(dragX, dragY);
             })
-            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_END, () => this.#container.setDepth(this.#container.y + (this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM) / 2));
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_END, () => this.#setDepth(battlefield));
+        this.#setDepth(battlefield);
+        this.#scene.input.setDraggable(this.#container);
 
-        this.#container.on('pointerover', () => {
+        this.#container.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
             this.#rankedUnit.models.forEach(rank =>
                 rank.forEach(rankedModel => {
                     rankedModel.displaySingleModel.sprite.setTint(0x44ff44);
                 })
             );
         });
-        this.#container.on('pointerout', () => {
+        this.#container.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
             this.#rankedUnit.models.forEach(rank =>
                 rank.forEach(rankedModel => {
                     rankedModel.displaySingleModel.sprite.clearTint();
@@ -61,15 +57,45 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
         });
     }
 
-    #showOutline() {
-        const modelBase = this.#rankedUnit.getSingleBase();
+    #setDepth(/** @type {EowBattlefield} */battlefield) {
+        this.#container.setDepth(
+            this.#container.x - this.#getHalfSideSize()
+            + (this.#container.y + this.#getHalfFrontSize())
+            * battlefield.longEdge * DisplaySize.INCH
+        );
+    }
 
-        this.#battlefieldScene.add.rectangle(
+    #showOutline() {
+        this.#scene.add.rectangle(
             this.#container.x,
             this.#container.y,
-            this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM,
-            this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM
+            this.#getSideSize(),
+            this.#getFrontSize()
         )
             .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR);
+    }
+
+    /** @returns {Number} */
+    #getHalfSideSize() {
+        return this.#getSideSize() / 2;
+    }
+
+    /** @returns {Number} */
+    #getSideSize() {
+        const modelBase = this.#rankedUnit.getSingleBase();
+
+        return this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM;
+    }
+
+    /** @returns {Number} */
+    #getHalfFrontSize() {
+        return this.#getFrontSize() / 2;
+    }
+
+    /** @returns {Number} */
+    #getFrontSize() {
+        const modelBase = this.#rankedUnit.getSingleBase();
+
+        return this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM;
     }
 }

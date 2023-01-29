@@ -1,23 +1,32 @@
 class PhaserDisplayFactory extends EowDisplayFactory {
 
-    /** @type {BattlefieldScene} */battlefieldScene = null;
+    /** @type {EowScene} */#scene = null;
 
-    /** @type {PhaserImageRegistry} */imageRegistry = null;
+    /** @type {PhaserImageRegistry} */#imageRegistry = null;
 
-    constructor(/** @type {BattlefieldScene} */battlefieldScene, /** @type {PhaserImageRegistry} */imageRegistry) {
+    /** @type {EowBattlefield} */#battlefield = null;
+
+    constructor(/** @type {EowScene} */scene, /** @type {PhaserImageRegistry} */imageRegistry) {
         super();
-        this.battlefieldScene = battlefieldScene;
-        this.imageRegistry = imageRegistry;
+        this.#scene = scene;
+        this.#imageRegistry = imageRegistry;
+    }
+
+    createBattlefield(/** @type {EowBattlefield} */battlefield) {
+        const displayBattlefield = new PhaserDisplayBattlefield(this.#scene, battlefield);
+        battlefield.displayBattlefield = displayBattlefield;
+        displayBattlefield.create();
+        this.#battlefield = battlefield;
     }
 
     createTable(/** @type {EowTable} */table) {
-        const displayTable = new PhaserDisplayTable(this.battlefieldScene, table);
+        const displayTable = new PhaserDisplayTable(this.#scene, table);
         table.displayTable = displayTable;
         displayTable.create();
     }
 
     createBase(/** @type {EowBase} */base) {
-        const displayBase = new PhaserDisplayBase(this.battlefieldScene, base);
+        const displayBase = new PhaserDisplayBase(this.#scene, base);
         base.displayBase = displayBase;
         displayBase.create();
     }
@@ -25,10 +34,10 @@ class PhaserDisplayFactory extends EowDisplayFactory {
     createSingleModel(/** @type {EowSingleModel} */singleModel) {
         this.createBase(singleModel.base);
         
-        const imageOffset = this.imageRegistry.getImageOffset(singleModel.imageId);
-        const displaySingleModel = new PhaserDisplaySingleModel(this.battlefieldScene, singleModel, imageOffset);
+        const imageOffset = this.#imageRegistry.getImageOffset(singleModel.imageId);
+        const displaySingleModel = new PhaserDisplaySingleModel(this.#scene, singleModel, imageOffset);
         singleModel.displaySingleModel = displaySingleModel;
-        displaySingleModel.create();
+        displaySingleModel.create(this.#battlefield);
     }
 
     createRankedUnit(/** @type {EowRankedUnit} */rankedUnit) {
@@ -37,8 +46,8 @@ class PhaserDisplayFactory extends EowDisplayFactory {
                 this.createSingleModel(unitModel);
             });
         });
-        const displayRankedUnit = new PhaserDisplayRankedUnit(this.battlefieldScene, rankedUnit);
+        const displayRankedUnit = new PhaserDisplayRankedUnit(this.#scene, rankedUnit);
         rankedUnit.displayRankedUnit = displayRankedUnit;
-        displayRankedUnit.create();
+        displayRankedUnit.create(this.#battlefield);
     }
 }
