@@ -9,6 +9,12 @@ class PhaserImageRegistry {
         this.#registry.set('cultists/succubi/00-succubi-0', new PhaserImageOffset(-3, 17));
         this.#registry.set('cultists/succubi/00-succubi-1', new PhaserImageOffset(-1, 17));
         this.#registry.set('cultists/clawed-fiend/00-clawed-fiend-0', new PhaserImageOffset(-30, 27));
+        
+        this.#registry.set('beast-herds/soothsayer/00-soothsayer-0', new PhaserImageOffset(-7, 18));
+        this.#registry.set('beast-herds/wildhorn-herd/00-wildhorn-herd-0', new PhaserImageOffset(-6, 18));
+        this.#registry.set('beast-herds/wildhorn-herd/00-wildhorn-herd-1', new PhaserImageOffset(-3, 18));
+        this.#registry.set('beast-herds/wildhorn-herd/00-wildhorn-herd-2', new PhaserImageOffset(-6, 18));
+        this.#registry.set('beast-herds/minotaur/00-minotaur-0', new PhaserImageOffset(-12, 30));
     }
 
     /** @returns {PhaserImageOffset} */

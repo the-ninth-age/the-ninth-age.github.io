@@ -12,6 +12,12 @@ class EowModule {
 
     /** @type {EowRankedUnit} */clawedFiendUnit = null;
 
+    /** @type {EowSingleModel} */soothsayer = null;
+
+    /** @type {EowRankedUnit} */wildhornHerdUnit = null;
+
+    /** @type {EowRankedUnit} */minotaursUnit = null;
+
     initialize(/** @type {EowDisplayFactory} */displayFactory) {
         this.battlefield = new EowBattlefield();
         displayFactory.createBattlefield(this.battlefield);
@@ -49,5 +55,26 @@ class EowModule {
         const clawedFiend = new EowSingleModel(clawedFiendModelBase, clawedFiendImageId);
         this.clawedFiendUnit = new EowRankedUnit([clawedFiend], 2, 1)
         displayFactory.createRankedUnit(this.clawedFiendUnit);
+
+        const soothsayerImageId = new ImageId('beast-herds/soothsayer/00-soothsayer-0');
+        const soothsayerBase = new EowBase(400, 150, 25, 25);
+        this.soothsayer = new EowSingleModel(soothsayerBase, soothsayerImageId);
+        displayFactory.createSingleModel(this.soothsayer);
+
+        const wildhornHerd0ImageId = new ImageId('beast-herds/wildhorn-herd/00-wildhorn-herd-0');
+        const wildhornHerd1ImageId = new ImageId('beast-herds/wildhorn-herd/00-wildhorn-herd-1');
+        const wildhornHerd2ImageId = new ImageId('beast-herds/wildhorn-herd/00-wildhorn-herd-2');
+        const wildhornHerdModelBase = new EowBase(470, 150, 25, 25);
+        const wildhornHerd0 = new EowSingleModel(wildhornHerdModelBase, wildhornHerd0ImageId);
+        const wildhornHerd1 = new EowSingleModel(wildhornHerdModelBase, wildhornHerd1ImageId);
+        const wildhornHerd2 = new EowSingleModel(wildhornHerdModelBase, wildhornHerd2ImageId);
+        this.wildhornHerdUnit = new EowRankedUnit([wildhornHerd0, wildhornHerd1, wildhornHerd2], 5, 3);
+        displayFactory.createRankedUnit(this.wildhornHerdUnit);
+
+        const minotaurImageId = new ImageId('beast-herds/minotaur/00-minotaur-0');
+        const minotaurModelBase = new EowBase(435, 280, 40, 40);
+        const minotaur = new EowSingleModel(minotaurModelBase, minotaurImageId);
+        this.minotaursUnit = new EowRankedUnit([minotaur], 3, 1)
+        displayFactory.createRankedUnit(this.minotaursUnit);
     }
 }
