@@ -12,6 +12,11 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
         this.#rankedUnit = rankedUnit;
     }
 
+    /** @returns {PhaserDisplayRankedUnit} */
+    static unwrap(/** @type {EowRankedUnit} */rankedUnit) {
+        return rankedUnit.displayRankedUnit;
+    }
+
     create(/** @type {EowBattlefield} */battlefield) {
         const modelBase = this.#rankedUnit.getSingleBase();
         const x = modelBase.x;
@@ -24,16 +29,16 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
             })
         );
         const /** @type {Array<Phaser.GameObjects.Rectangle>} */bases = this.#rankedUnit.models
-            .flatMap(rank => rank)
-            .map((/** @type {EowSingleModel} */rankedModel) => rankedModel.base.displayBase.rectangle);
+            .flatMap((/** @type {Array<EowSingleModel>} */rank) => rank)
+            .map((/** @type {EowSingleModel} */rankedModel) => PhaserDisplayBase.unwrap(rankedModel.base).rectangle);
         const /** @type {Array<Phaser.GameObjects.Sprite>} */models = this.#rankedUnit.models
-            .flatMap(rank => rank)
-            .flatMap((/** @type {EowSingleModel} */rankedModel) => rankedModel.displaySingleModel.sprite);
+            .flatMap((/** @type {Array<EowSingleModel>} */rank) => rank)
+            .map((/** @type {EowSingleModel} */rankedModel) => PhaserDisplaySingleModel.unwrap(rankedModel).sprite);
 
         this.#container = this.#scene.add.container(x, y, bases.concat(models))
             .setSize(this.#getSideSize(), this.#getFrontSize())
             .setInteractive()
-            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_START, () => this.#container.setDepth(Number.MAX_VALUE))
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_START, () => this.#container.setDepth(EowPhaserDepth.MODEL_DRAGGED))
             .on(Phaser.Input.Events.GAMEOBJECT_DRAG, (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
                 this.#container.setPosition(dragX, dragY);
             })
@@ -44,14 +49,14 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
         this.#container.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => {
             this.#rankedUnit.models.forEach(rank =>
                 rank.forEach(rankedModel => {
-                    rankedModel.displaySingleModel.sprite.setTint(0x44ff44);
+                    PhaserDisplaySingleModel.unwrap(rankedModel).setTint();
                 })
             );
         });
         this.#container.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => {
             this.#rankedUnit.models.forEach(rank =>
                 rank.forEach(rankedModel => {
-                    rankedModel.displaySingleModel.sprite.clearTint();
+                    PhaserDisplaySingleModel.unwrap(rankedModel).clearTint();
                 })
             );
         });
@@ -59,9 +64,11 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
 
     #setDepth(/** @type {EowBattlefield} */battlefield) {
         this.#container.setDepth(
-            this.#container.x - this.#getHalfSideSize()
-            + (this.#container.y + this.#getHalfFrontSize())
-            * battlefield.longEdge * DisplaySize.INCH
+            EowPhaserDepth.getDepth(
+                this.#container.x - this.#getHalfSideSize(),
+                this.#container.y + this.#getHalfFrontSize(),
+                battlefield
+            )
         );
     }
 

@@ -2,7 +2,7 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
 
     /** @type {EowScene} */#scene = null;
 
-    /** @type {EowSingleModel} */singleModel = null;
+    /** @type {EowSingleModel} */#singleModel = null;
 
     /** @type {Phaser.GameObjects.Sprite} */sprite = null;
 
@@ -15,39 +15,62 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
     ) {
         super();
         this.#scene = scene;
-        this.singleModel = singleModel;
+        this.#singleModel = singleModel;
         this.#imageOffset = imageOffset;
+    }
+
+    /** @returns {PhaserDisplaySingleModel} */
+    static unwrap(/** @type {EowSingleModel} */singleModel) {
+        return singleModel.displaySingleModel;
     }
 
     create(/** @type {EowBattlefield} */battlefield) {
         this.sprite = this.#scene.add
             .sprite(
-                this.singleModel.base.x + this.#imageOffset.xOffset,
-                this.singleModel.base.y + this.#imageOffset.yOffset,
+                this.#singleModel.base.x + this.#imageOffset.xOffset,
+                this.#singleModel.base.y + this.#imageOffset.yOffset,
                 this.#scene.t9aTexture,
-                this.singleModel.imageId.value
+                this.#singleModel.imageId.value
             )
             .setScale(0.2)
             .setOrigin(0, 1);
-        this.setDepth(battlefield);
+        this.#setDepth(battlefield);
 
-        const /** @type {PhaserDisplayBase} */displayBase = this.singleModel.base.displayBase;
-        displayBase.attachImage(this, battlefield);
+        const displayBase = PhaserDisplayBase.unwrap(this.#singleModel.base);
+        displayBase.rectangle
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_START, () => this.sprite.setDepth(EowPhaserDepth.MODEL_DRAGGED))
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG, (pointer, /** @type {Number} */dragX, /** @type {Number} */dragY) => {
+                this.#setPosition(dragX, dragY);
+            })
+            .on(Phaser.Input.Events.GAMEOBJECT_DRAG_END, () => this.#setDepth(battlefield))
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, () => this.setTint())
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, () => this.clearTint());
     }
 
-    setDepth(/** @type {EowBattlefield} */battlefield) {
-        const /** @type {PhaserDisplayBase} */displayBase = this.singleModel.base.displayBase;
+    #setDepth(/** @type {EowBattlefield} */battlefield) {
+        const displayBase = PhaserDisplayBase.unwrap(this.#singleModel.base);
         this.sprite.setDepth(
-            displayBase.rectangle.x
-            + (displayBase.rectangle.y + this.singleModel.base.frontSize * DisplaySize.MM)
-            * battlefield.longEdge * DisplaySize.INCH
+            EowPhaserDepth.getDepth(
+                displayBase.rectangle.x,
+                displayBase.rectangle.y + this.#singleModel.base.frontSize * DisplaySize.MM,
+                battlefield
+            )
         );
     }
 
-    setPosition(/** @type {Number} */x, /** @type {Number} */y) {
+    #setPosition(/** @type {Number} */x, /** @type {Number} */y) {
         this.sprite.setPosition(x + this.#imageOffset.xOffset, y + this.#imageOffset.yOffset);
     }
 
+    setTint() {
+        this.sprite.setTint(0x44ff44);
+    }
+
+    clearTint() {
+        this.sprite.clearTint();
+    }
+
+    /** @override */
     changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
         this.sprite.x += xOffset;
         this.sprite.y += yOffset;
