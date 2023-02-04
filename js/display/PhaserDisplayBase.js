@@ -17,9 +17,9 @@ class PhaserDisplayBase extends EowDisplayBase {
         return base.displayBase;
     }
 
-    create() {
+    create(/** @type {Number} */x, /** @type {Number} */y) {
         this.rectangle = this.#scene.add
-            .rectangle(this.#base.x, this.#base.y, this.#base.sideSize * DisplaySize.MM, this.#base.frontSize * DisplaySize.MM)
+            .rectangle(x, y, this.#base.size.side * DisplaySize.MM, this.#base.size.front * DisplaySize.MM)
             .setOrigin(0)
             .setStrokeStyle(EowDisplayStyle.BATTLEFIELD_EDGE_WIDTH, EowDisplayStyle.BATTLEFIELD_EDGE_COLOR)
             .setInteractive()
@@ -29,6 +29,22 @@ class PhaserDisplayBase extends EowDisplayBase {
             })
             .on(Phaser.Input.Events.GAMEOBJECT_DRAG_END, () => this.rectangle.setDepth(EowPhaserDepth.BASE));
         this.#scene.input.setDraggable(this.rectangle);
+    }
+
+    /**
+     * @override 
+     * @returns {Number} 
+     */
+    get x() {
+        return this.rectangle.x;
+    }
+
+    /**
+     * @override
+     * @returns {Number}
+     */
+    get y() {
+        return this.rectangle.y
     }
 
     /** @override */

@@ -2,28 +2,14 @@ class EowBase {
 
     /** @type {EowDisplayBase} */displayBase = null;
 
-    /** @type {Number} */x = null;
+    /** @type {EowBaseSize} */size = null;
 
-    /** @type {Number} */y = null;
-
-    /** @type {Number} */frontSize = null;
-
-    /** @type {Number} */sideSize = null
-
-    constructor(
-        /** @type {Number} */x,
-        /** @type {Number} */y,
-        /** @type {Number} */frontSize,
-        /** @type {Number} */sideSize
-    ) {
-        this.x = x;
-        this.y = y;
-        this.frontSize = frontSize;
-        this.sideSize = sideSize;
+    constructor(/** @type {EowBaseSize} */baseSize) {
+        this.size = baseSize;
     }
 
     clone() {
-        return new EowBase(this.x, this.y, this.frontSize, this.sideSize);
+        return new EowBase(this.size);
     }
 
     disableFreePlacement() {
@@ -32,5 +18,15 @@ class EowBase {
 
     changePositionBy(/** @type {Number} */xOffset, /** @type {Number} */yOffset) {
         this.displayBase.changePositionBy(xOffset, yOffset);
+    }
+
+    /** @returns {Number} */
+    get x() {
+        return this.displayBase.x;
+    }
+
+    /** @returns {Number} */
+    get y() {
+        return this.displayBase.y;
     }
 }

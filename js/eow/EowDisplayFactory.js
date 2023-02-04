@@ -4,9 +4,21 @@ class EowDisplayFactory {
 
     createTable(/** @type {EowTable} */table) { }
 
-    createBase(/** @type {EowBase} */base) { }
+    createBase(
+        /** @type {Number} */x,
+        /** @type {Number} */y,
+        /** @type {EowBase} */base
+    ) { }
 
-    createSingleModel(/** @type {EowSingleModel} */singleModel) { }
+    createSingleModel(
+        /** @type {Number} */x,
+        /** @type {Number} */y,
+        /** @type {EowSingleModel} */singleModel
+    ) { }
 
-    createRankedUnit(/** @type {EowRankedUnit} */rankedUnit) { }
+    createRankedUnit(
+        /** @type {Number} */x,
+        /** @type {Number} */y,
+        /** @type {EowRankedUnit} */rankedUnit
+    ) { }
 }

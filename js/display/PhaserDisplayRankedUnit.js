@@ -91,7 +91,7 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
     #getSideSize() {
         const modelBase = this.#rankedUnit.getSingleBase();
 
-        return this.#rankedUnit.ranks * modelBase.sideSize * DisplaySize.MM;
+        return this.#rankedUnit.ranks * modelBase.size.side * DisplaySize.MM;
     }
 
     /** @returns {Number} */
@@ -103,6 +103,6 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
     #getFrontSize() {
         const modelBase = this.#rankedUnit.getSingleBase();
 
-        return this.#rankedUnit.files * modelBase.frontSize * DisplaySize.MM;
+        return this.#rankedUnit.files * modelBase.size.front * DisplaySize.MM;
     }
 }

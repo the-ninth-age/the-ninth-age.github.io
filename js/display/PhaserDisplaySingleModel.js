@@ -48,11 +48,10 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
     }
 
     #setDepth(/** @type {EowBattlefield} */battlefield) {
-        const displayBase = PhaserDisplayBase.unwrap(this.#singleModel.base);
         this.sprite.setDepth(
             EowPhaserDepth.getDepth(
-                displayBase.rectangle.x,
-                displayBase.rectangle.y + this.#singleModel.base.frontSize * DisplaySize.MM,
+                this.#singleModel.base.x,
+                this.#singleModel.base.y + this.#singleModel.base.size.front * DisplaySize.MM,
                 battlefield
             )
         );
