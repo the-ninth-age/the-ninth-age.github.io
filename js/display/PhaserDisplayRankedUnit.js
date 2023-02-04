@@ -105,4 +105,13 @@ class PhaserDisplayRankedUnit extends EowDisplayRankedUnit {
 
         return this.#rankedUnit.files * modelBase.size.front * DisplaySize.MM;
     }
+
+    /** @override */
+    flip() {
+        this.#rankedUnit.models.forEach(rank =>
+            rank.forEach(rankedModel => {
+                rankedModel.flip();
+            })
+        );
+    }
 }

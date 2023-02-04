@@ -23,4 +23,8 @@ class EowSingleModel {
         this.base.changePositionBy(xOffset, yOffset);
         this.displaySingleModel.changePositionBy(xOffset, yOffset);
     }
+
+    flip() {
+        this.displaySingleModel.flip();
+    }
 }

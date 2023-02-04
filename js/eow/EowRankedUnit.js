@@ -28,6 +28,10 @@ class EowRankedUnit {
         return this.models[0][0].base;
     }
 
+    flip() {
+        this.displayRankedUnit.flip();
+    }
+
     /** 
      * Width
      * @returns {Number} 

@@ -32,6 +32,7 @@ class EowModule {
         const cultLeaderBase = new EowBase(EowBaseSize.SMALL);
         this.cultLeader = new EowSingleModel(cultLeaderBase, cultLeaderImageId);
         displayFactory.createSingleModel(200, 150, this.cultLeader);
+        this.cultLeader.flip();
 
         const cultist0ImageId = new ImageId('cultists/cultist/00-cultist-0');
         const cultist1ImageId = new ImageId('cultists/cultist/00-cultist-1');
@@ -39,7 +40,8 @@ class EowModule {
         const cultist0 = new EowSingleModel(cultistModelBase, cultist0ImageId);
         const cultist1 = new EowSingleModel(cultistModelBase, cultist1ImageId);
         this.cultistsUnit = new EowRankedUnit([cultist0, cultist1], 5, 3);
-        displayFactory.createRankedUnit(300, 150, this.cultistsUnit);
+        displayFactory.createRankedUnit(150, 150, this.cultistsUnit);
+        this.cultistsUnit.flip();
 
         const succubi0ImageId = new ImageId('cultists/succubi/00-succubi-0');
         const succubi1ImageId = new ImageId('cultists/succubi/00-succubi-1');
@@ -47,13 +49,15 @@ class EowModule {
         const succubi0 = new EowSingleModel(succubiModelBase, succubi0ImageId);
         const succubi1 = new EowSingleModel(succubiModelBase, succubi1ImageId);
         this.succubiUnit = new EowRankedUnit([succubi0, succubi1], 5, 3);
-        displayFactory.createRankedUnit(200, 270, this.succubiUnit);
+        displayFactory.createRankedUnit(230, 270, this.succubiUnit);
+        this.succubiUnit.flip();
 
         const clawedFiendImageId = new ImageId('cultists/clawed-fiend/00-clawed-fiend-0');
         const clawedFiendModelBase = new EowBase(EowBaseSize.LARGE);
         const clawedFiend = new EowSingleModel(clawedFiendModelBase, clawedFiendImageId);
         this.clawedFiendUnit = new EowRankedUnit([clawedFiend], 2, 1)
-        displayFactory.createRankedUnit(150, 150, this.clawedFiendUnit);
+        displayFactory.createRankedUnit(300, 150, this.clawedFiendUnit);
+        this.clawedFiendUnit.flip();
 
         const soothsayerImageId = new ImageId('beast-herds/soothsayer/00-soothsayer-0');
         const soothsayerBase = new EowBase(EowBaseSize.MEDIUM);

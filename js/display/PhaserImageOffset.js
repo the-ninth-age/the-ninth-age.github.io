@@ -8,4 +8,9 @@ class PhaserImageOffset {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }
+
+    /** @returns {PhaserImageOffset} */
+    withXOffset(/** @type {Number} */xOffset) {
+        return new PhaserImageOffset(xOffset, this.yOffset);
+    }
 }

@@ -74,4 +74,14 @@ class PhaserDisplaySingleModel extends EowDisplaySingleModel {
         this.sprite.x += xOffset;
         this.sprite.y += yOffset;
     }
+
+    /** @override */
+    flip() {
+        this.sprite.toggleFlipX();
+        const newXOffset = this.sprite.displayWidth
+            - this.#singleModel.base.size.side * DisplaySize.MM
+            - Math.abs(this.#imageOffset.xOffset);
+        this.#imageOffset = this.#imageOffset.withXOffset(-newXOffset);
+        this.sprite.x = this.#singleModel.base.x - newXOffset;
+    }
 }
